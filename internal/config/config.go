@@ -25,6 +25,12 @@ type Config struct {
 		SSLMode  string
 	}
 
+	JWT struct {
+		Secretkey string
+		TokenExpiry time.Duration
+		RefreshExpiry time.Duration
+	}
+
 	Environment string
 }
 
@@ -48,6 +54,10 @@ func Load() (*Config, error) {
 	cfg.Database.DBName = getEnv("DB_NAME", "auth_service")
 	cfg.Database.SSLMode = getEnv("DB_SSLmode", "disable")
 
+	//JWT config
+	cfg.JWT.Secretkey= getEnv("JWT_SECRET", "mysecretkey")
+	cfg.JWT.TokenExpiry = time.Hour * 24  // 24 hours
+	cfg.JWT.RefreshExpiry = time.Hour * 168 // 7 days
 	return cfg, nil
 
 }
